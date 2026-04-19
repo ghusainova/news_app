@@ -1,0 +1,12 @@
+name: feature
+description: Generate a Clean Architecture feature skeleton (data/domain/presentation).
+version: 0.1.0
+
+environment:
+  mason: ">=0.1.0-dev.50 <1.0.0"
+
+vars:
+  name:
+    type: string
+    description: Feature name (e.g. profile, settings)
+
