@@ -1,4 +1,0 @@
-class Unit {
-  const Unit();
-}
-

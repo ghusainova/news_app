@@ -10,26 +10,24 @@ part '{{name.snakeCase()}}_state.dart';
 
 @injectable
 class {{name.pascalCase()}}Bloc extends Bloc<{{name.pascalCase()}}Event, {{name.pascalCase()}}State> {
-  final Get{{name.pascalCase()}} get{{name.pascalCase()}};
+  final Get{{name.pascalCase()}} get{{name.pascalCase()}}UseCase;
 
-  {{name.pascalCase()}}Bloc({required this.get{{name.pascalCase()}})
+  {{name.pascalCase()}}Bloc({required this.get{{name.pascalCase()}}UseCase})
       : super(const {{name.pascalCase()}}State.initial()) {
-    on<_Requested>(_onRequested);
-    add(const {{name.pascalCase()}}Event.requested());
+    on<LoadRequested>(_onLoadRequested);
   }
 
-  Future<void> _onRequested(
-    _Requested event,
+  Future<void> _onLoadRequested(
+    LoadRequested event,
     Emitter<{{name.pascalCase()}}State> emit,
   ) async {
     emit(const {{name.pascalCase()}}State.loading());
-    final result = await get{{name.pascalCase()}}();
-
-    result.when(
-      success: (value) => emit({{name.pascalCase()}}State.ready(value: value)),
-      failure: (failure) =>
-          emit({{name.pascalCase()}}State.error(message: failure.message)),
-    );
+    try {
+      final data = await get{{name.pascalCase()}}UseCase.call();
+      emit({{name.pascalCase()}}State.loaded(data));
+    } catch (e) {
+      emit({{name.pascalCase()}}State.error(e.toString()));
+    }
   }
 }
 
